@@ -62,7 +62,7 @@ public class StarQuestion : IQuestion
                     Color = DiscordColor.Green
                 };
                 correctEmbed.AddField("Answer", $"{ansStr}");
-                await channel.SendMessageAsync(correctEmbed);
+                await message.Result.RespondAsync(correctEmbed);
                 return false;
             }
 
@@ -72,7 +72,7 @@ public class StarQuestion : IQuestion
                 Color = DiscordColor.Red
             };
             incorrectEmbed.AddField("Answer", $"{ansStr}");
-            await channel.SendMessageAsync(incorrectEmbed);
+            await message.Result.RespondAsync(incorrectEmbed);
             Point = 0;
             return false;
         }
