@@ -4,7 +4,7 @@ using DSharpPlus.Entities;
 using Quiztellation.Quiz.Handlers;
 using Quiztellation.Quiz.Questions;
 using Quiztellation.Data;
-
+using Realms.Sync;
 namespace Quiztellation.Commands;
 
 public class QuizCommands : BaseCommandModule
@@ -16,26 +16,28 @@ public class QuizCommands : BaseCommandModule
             [Description("easy/medium/hard/pitt")] string level = "easy")
     // [Description("Choose Type of Quiz")] string quizType = "star")
     {
+        var app = App.Create(Environment.GetEnvironmentVariable("REALM_APP_ID"));
+        var user = await app.LogInAsync(Credentials.Anonymous());
         var starsFiltered = new List<Star>();
         switch (level)
         {
             case "easy":
-                starsFiltered.AddRange(await StarData.GetStarsByLevel(1, 10));
+                starsFiltered.AddRange(await user.Functions.CallAsync<List<Star>>("getStarsByLevel", 1, 10));
                 break;
             case "medium":
-                foreach (List<Star> result in await Task.WhenAll(StarData.GetStarsByLevel(1, 5), StarData.GetStarsByLevel(2, 5)))
+                foreach (List<Star> result in await Task.WhenAll(user.Functions.CallAsync<List<Star>>("getStarsByLevel", 1, 5), user.Functions.CallAsync<List<Star>>("getStarsByLevel", 2, 5)))
                 {
                     starsFiltered.AddRange(result);
                 }
                 break;
             case "hard":
-                foreach (List<Star> result in await Task.WhenAll(StarData.GetStarsByLevel(1, 3), StarData.GetStarsByLevel(2, 4), StarData.GetStarsByLevel(3, 3)))
+                foreach (List<Star> result in await Task.WhenAll(user.Functions.CallAsync<List<Star>>("getStarsByLevel", 1, 3), user.Functions.CallAsync<List<Star>>("getStarsByLevel", 2, 4), user.Functions.CallAsync<List<Star>>("getStarsByLevel", 3, 3)))
                 {
                     starsFiltered.AddRange(result);
                 }
                 break;
             case "pitt":
-                foreach (List<Star> result in await Task.WhenAll(StarData.GetStarsByLevel(2, 3), StarData.GetStarsByLevel(3, 4), StarData.GetStarsByLevel(4, 3)))
+                foreach (List<Star> result in await Task.WhenAll(user.Functions.CallAsync<List<Star>>("getStarsByLevel", 2, 3), user.Functions.CallAsync<List<Star>>("getStarsByLevel", 3, 4), user.Functions.CallAsync<List<Star>>("getStarsByLevel", 4, 3)))
                 {
                     starsFiltered.AddRange(result);
                 }

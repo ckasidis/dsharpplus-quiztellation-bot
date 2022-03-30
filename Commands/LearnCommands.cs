@@ -2,7 +2,7 @@ using DSharpPlus.CommandsNext;
 using DSharpPlus.CommandsNext.Attributes;
 using DSharpPlus.Entities;
 using Quiztellation.Data;
-
+using Realms.Sync;
 namespace Quiztellation.Commands;
 
 public class LearnCommands : BaseCommandModule
@@ -14,7 +14,9 @@ public class LearnCommands : BaseCommandModule
             [Description("Enter Abbreviation of Constellation")] string con = "And")
     // [Description("Choose Type of Quiz")] string quizType = "star")
     {
-        var starsInCon = await StarData.GetStarsByCon(con);
+        var app = App.Create(Environment.GetEnvironmentVariable("REALM_APP_ID"));
+        var user = await app.LogInAsync(Credentials.Anonymous());
+        var starsInCon = await user.Functions.CallAsync<List<Star>>("getStarsByCon", con);
         var starsInConEmbed = new DiscordEmbedBuilder
         {
             Title = con,

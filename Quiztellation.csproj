@@ -12,7 +12,11 @@
     <PackageReference Include="DSharpPlus.CommandsNext" Version="4.1.0" />
     <PackageReference Include="DSharpPlus.Interactivity" Version="4.1.0" />
     <PackageReference Include="MongoDB.Bson" Version="2.15.0" />
-    <PackageReference Include="MongoDB.Driver" Version="2.15.0" />
+    <PackageReference Include="Realm" Version="10.11.0" />
+    <PackageReference Include="Realm.Fody" Version="10.11.0">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
   </ItemGroup>
 
 </Project>
