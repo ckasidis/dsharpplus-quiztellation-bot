@@ -9,10 +9,10 @@ public class StarQuestion : IQuestion
     private readonly List<string> _answer;
     private readonly string _question;
 
-    public StarQuestion(string question, List<string> answer, int point)
+    public StarQuestion(string question, string answer, int point)
     {
         _question = question;
-        _answer = answer;
+        _answer = answer.Split(", ").ToList();
         Point = point;
     }
 

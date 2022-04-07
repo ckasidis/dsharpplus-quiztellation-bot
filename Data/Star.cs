@@ -1,18 +1,32 @@
-using MongoDB.Bson.Serialization.Attributes;
+using System.Text.Json.Serialization;
 
 namespace Quiztellation.Data;
 
+public class Stars {
+    public List<Star> records { get; set; }
+}
 public class Star
 {
-    [BsonElement("bayer")]
+    [JsonPropertyName("id")]
+    public string Id { get; set; }
+
+    [JsonPropertyName("createdTime")]
+    public string CreatedTime { get; set; }
+
+    [JsonPropertyName("fields")]
+    public StarFields Fields { get; set; }
+}
+public class StarFields
+{
+    [JsonPropertyName("bayer")]
     public string Bayer { get; set; }
 
-    [BsonElement("con")]
+    [JsonPropertyName("con")]
     public string Con { get; set; }
 
-    [BsonElement("names")]
-    public List<string> Names { get; set; }
+    [JsonPropertyName("names")]
+    public string Names { get; set; }
 
-    [BsonElement("level")]
+    [JsonPropertyName("level")]
     public int Level { get; set; }
 }
