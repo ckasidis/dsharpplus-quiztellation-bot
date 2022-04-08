@@ -6,13 +6,13 @@ namespace Quiztellation.Quiz.Questions;
 
 public class StarQuestion : IQuestion
 {
-    private readonly List<string> _answer;
+    private readonly string _answer;
     private readonly string _question;
 
     public StarQuestion(string question, string answer, int point)
     {
         _question = question;
-        _answer = answer.Split(", ").ToList();
+        _answer = answer;
         Point = point;
     }
 
@@ -46,11 +46,8 @@ public class StarQuestion : IQuestion
                 await channel.SendMessageAsync(timedOutEmbed);
                 return true;
             }
-
-            var ansStr = "";
-            var ansCap = _answer.Select(x => x.ToUpper()).ToList();
-            foreach (var ans in _answer) ansStr = ansStr + ans + "/";
-            ansStr = ansStr.Remove(ansStr.Length - 1, 1);
+            
+            var ansCap = _answer.Split(", ").Select(x => x.ToUpper()).ToList();
 
             if (string.Equals(message.Result.Content, "exit", StringComparison.CurrentCultureIgnoreCase)) return true;
 
@@ -61,7 +58,7 @@ public class StarQuestion : IQuestion
                     Title = "Correct!",
                     Color = DiscordColor.Green
                 };
-                correctEmbed.AddField("Answer", $"{ansStr}");
+                correctEmbed.AddField("Answer", $"{_answer}");
                 await message.Result.RespondAsync(correctEmbed);
                 return false;
             }
@@ -71,7 +68,7 @@ public class StarQuestion : IQuestion
                 Title = "Incorrect!",
                 Color = DiscordColor.Red
             };
-            incorrectEmbed.AddField("Answer", $"{ansStr}");
+            incorrectEmbed.AddField("Answer", $"{_answer}");
             await message.Result.RespondAsync(incorrectEmbed);
             Point = 0;
             return false;
