@@ -18,14 +18,11 @@ public class Star
 }
 public class StarFields
 {
-    [JsonPropertyName("bayer")]
-    public string Bayer { get; set; }
-
-    [JsonPropertyName("con")]
-    public string Con { get; set; }
-
     [JsonPropertyName("names")]
     public string Names { get; set; }
+    
+    [JsonPropertyName("bayer")]
+    public string Bayer { get; set; }
 
     [JsonPropertyName("level")]
     public int Level { get; set; }

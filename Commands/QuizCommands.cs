@@ -19,7 +19,7 @@ public class QuizCommands : BaseCommandModule
             new MediaTypeWithQualityHeaderValue("application/json"));
         client.DefaultRequestHeaders.Authorization =
             new AuthenticationHeaderValue("Bearer", Environment.GetEnvironmentVariable("AIRTABLE_KEY"));
-        var streamTask = client.GetStreamAsync($"Stars?filterByFormula=%7Blevel%7D%3D{level}");
+        var streamTask = client.GetStreamAsync($"Stars?fields%5B%5D=names&fields%5B%5D=bayer&fields%5B%5D=level&filterByFormula=%7Blevel%7D%3D{level}");
         var stars = JsonSerializer.Deserialize<Stars>(await streamTask);
         return stars.records.OrderBy(i => Guid.NewGuid()).Take(count).ToList();
     }
@@ -69,7 +69,7 @@ public class QuizCommands : BaseCommandModule
         starsFiltered = starsFiltered.OrderBy(i => Guid.NewGuid()).ToList();
         var quizHandler = new QuizHandler(ctx.Client, ctx.Channel, ctx.User);
         foreach (var star in starsFiltered)
-            quizHandler.AddQuestion(new StarQuestion($"{star.Fields.Bayer} {star.Fields.Con}", star.Fields.Names, star.Fields.Level));
+            quizHandler.AddQuestion(new StarQuestion(star.Fields.Bayer, star.Fields.Names, star.Fields.Level));
 
         await quizHandler.ProcessQuiz();
     }
