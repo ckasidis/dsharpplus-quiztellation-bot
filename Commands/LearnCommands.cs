@@ -29,10 +29,24 @@ public class LearnCommands : BaseCommandModule
     [Aliases(new[] { "ls" })]
     [Description("Learn Stars in each Constellation")]
     public async Task LearnStar(CommandContext ctx,
-            [Description("Enter Abbreviation of Constellation")] string con = "and")
+            [Description("Enter a Constellation Name/Abbreviation/Genitive")] string con)
     // [Description("Choose Type of Quiz")] string quizType = "star")
     {
         var starsInCon = await GetStarsByCon(con);
+        if (starsInCon.Count <= 0)
+        {
+            var errorEmbed = new DiscordEmbedBuilder
+            {
+                Title = $"No result for constellation \"{con}\"",
+                Description = "You did not enter the Constellation correctly or it has no star with Proper Name",
+                Color = DiscordColor.Red
+            };
+            errorEmbed.AddField("Search with Name", ">ls Andromeda / >ls \"Ursa Major\"");
+            errorEmbed.AddField("Search with Abbreviation", ">ls And / >ls UMa");
+            errorEmbed.AddField("Search with Genitive", ">ls Andromedae / >ls \"Ursa Majoris\"");
+            await ctx.Channel.SendMessageAsync(errorEmbed);
+        }
+        
         var starsInConEmbed = new DiscordEmbedBuilder
         {
             Title = $"Result for constellation \"{con}\"",
@@ -42,16 +56,8 @@ public class LearnCommands : BaseCommandModule
 
         foreach (Star star in starsInCon)
         {
-            starsInConEmbed.AddField(star.Fields.Bayer, $"{star.Fields.Names}");
+            starsInConEmbed.AddField(star.Fields.Bayer, star.Fields.Names);
         }
         await ctx.Channel.SendMessageAsync(starsInConEmbed);
-
-        // var errorEmbed = new DiscordEmbedBuilder
-        // {
-        //     Title = "Please Enter a Valid Constellation",
-        //     Description = "e.g. UMa, CVn, Ori",
-        //     Color = DiscordColor.Red
-        // };
-        // await ctx.Channel.SendMessageAsync(errorEmbed);
     }
 }
