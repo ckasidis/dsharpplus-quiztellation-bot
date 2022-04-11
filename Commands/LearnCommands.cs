@@ -45,6 +45,8 @@ public class LearnCommands : BaseCommandModule
             errorEmbed.AddField("Search with Abbreviation", ">ls And / >ls UMa");
             errorEmbed.AddField("Search with Genitive", ">ls Andromedae / >ls \"Ursa Majoris\"");
             await ctx.Channel.SendMessageAsync(errorEmbed);
+            
+            return;
         }
         
         var starsInConEmbed = new DiscordEmbedBuilder
