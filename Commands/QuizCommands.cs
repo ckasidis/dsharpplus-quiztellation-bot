@@ -28,8 +28,7 @@ public class QuizCommands : BaseCommandModule
     [Aliases(new[] {"qs"})]
     [Description("Guess Name of Stars from Bayer Designations")]
     public async Task QuizStar(CommandContext ctx,
-            [Description("easy/medium/hard/pitt")] string level = "easy")
-    // [Description("Choose Type of Quiz")] string quizType = "star")
+            [Description("easy/medium/hard/extreme")] string level = "easy")
     {
         var starsFiltered = new List<Star>();
         switch (level)
